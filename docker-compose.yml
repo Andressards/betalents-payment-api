@@ -1,0 +1,28 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: betalents_app
+    volumes:
+      - ./src:/var/www
+    working_dir: /var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    user: "1000:1000"
+    command: tail -f /dev/null
+
+  mysql:
+    image: mysql:8
+    container_name: betalents_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: betalents
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3306:3306"
